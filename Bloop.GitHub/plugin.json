@@ -1,0 +1,12 @@
+{
+  "ID": "9a0ce110-3d99-4f17-b99a-3cd919c2191f",
+  "ActionKeyword": "gh",
+  "Name": "GitHub Plugin",
+  "Description": "GitHub Plugin",
+  "Author": "dstiert",
+  "Version": "1.0.0.0",
+  "Language": "csharp",
+  "Website": "https://bitbucket.org/dstiert/bloop.github",
+  "ExecuteFileName": "Bloop.GitHub.dll",
+  "IcoPath": "images\\icon.png"
+}
