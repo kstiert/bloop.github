@@ -9,10 +9,16 @@
     <Grid Margin="10" VerticalAlignment="Top" >
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Personal GitHub Token:"/>
-            <TextBox Name="Token" Text="" Width="178" VerticalAlignment="Center" TextChanged="Token_TextChanged"/>
+            <TextBox Name="Token" Text="" Width="250" VerticalAlignment="Center" TextChanged="Token_TextChanged"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Repositories Folder:"/>
+            <TextBox Name="RepoRoot" Text="" Width="178" VerticalAlignment="Center" TextChanged="RepoRoot_TextChanged"/>
+            <Button Click="Browse_Click">Browse</Button>
         </StackPanel>
     </Grid>
 </UserControl>

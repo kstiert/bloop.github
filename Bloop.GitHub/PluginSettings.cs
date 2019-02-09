@@ -45,5 +45,7 @@ namespace Bloop.GitHub
         public PluginSettings() { }
 
         public string Token { get; set; }
+
+        public string RepoRoot { get; set; }
     }
 }
