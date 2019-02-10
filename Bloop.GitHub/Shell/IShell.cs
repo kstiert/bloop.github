@@ -10,6 +10,8 @@ namespace Bloop.GitHub.Shell
     {
         bool Avalible { get; }
 
+        string Name { get; }
+
         void Launch(string wd, string command = null);
     }
 }

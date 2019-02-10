@@ -15,9 +15,11 @@ namespace Bloop.GitHub.Shell
             get
             {
                 var exe = new StringBuilder("bash.exe");
-                return PathFindOnPath(exe, new string[0]);
+                return PathFindOnPath(exe, null);
             }
         }
+
+        public string Name => "Git Bash";
 
         public void Launch(string wd, string command = null)
         {

@@ -27,7 +27,9 @@ namespace Bloop.GitHub
                 // Defaults
                 Instance = new PluginSettings
                 {
-                    Token = string.Empty
+                    Token = string.Empty,
+                    RepoRoot = "C:\\git",
+                    Shell = "Cmd"
                 };
                 Instance._path = file;
                 Instance.Save();
@@ -47,5 +49,7 @@ namespace Bloop.GitHub
         public string Token { get; set; }
 
         public string RepoRoot { get; set; }
+
+        public string Shell { get; set; }
     }
 }

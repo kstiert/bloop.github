@@ -1,5 +1,6 @@
-﻿using System.Windows.Controls;
-
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
+using Bloop.GitHub.Shell;
 
 namespace Bloop.GitHub
 {
@@ -8,10 +9,23 @@ namespace Bloop.GitHub
     /// </summary>
     public partial class GitHubPluginSettings : UserControl
     {
-        public GitHubPluginSettings()
+        public GitHubPluginSettings(IDictionary<string, IShell> shells)
         {
             InitializeComponent();
             Token.Text = PluginSettings.Instance.Token;
+            RepoRoot.Text = PluginSettings.Instance.RepoRoot;
+            foreach (var shell in shells.Values)
+            {
+                var radio = new RadioButton
+                {
+                    GroupName = "Shells",
+                    Content = shell.Name,
+                    IsChecked = PluginSettings.Instance.Shell == shell.Name,
+                    IsEnabled = shell.Avalible
+                };
+                radio.Checked += Radio_Checked;
+                Shells.Children.Add(radio);
+            }
         }
 
         private void Token_TextChanged(object sender, TextChangedEventArgs e)
@@ -35,6 +49,13 @@ namespace Bloop.GitHub
             {
                 RepoRoot.Text = dialog.SelectedPath;
             }
+        }
+
+        private void Radio_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var radio = (RadioButton)sender;
+            PluginSettings.Instance.Shell = radio.Content.ToString();
+            PluginSettings.Instance.Save();
         }
     }
 }

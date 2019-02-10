@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -12,12 +13,13 @@ namespace Bloop.GitHub
 {
     public class GitHubPlugin : IPlugin, ISettingProvider
     {
+        private readonly IDictionary<string, IShell> _shells = new Dictionary<string, IShell>();
         private IReadOnlyList<Repository> _repos;
         private PluginInitContext _context;
 
         public Control CreateSettingPanel()
         {
-            return new GitHubPluginSettings();
+            return new GitHubPluginSettings(_shells);
         }
 
         public void Init(PluginInitContext context)
@@ -26,6 +28,12 @@ namespace Bloop.GitHub
             PluginSettings.LoadSettings(Path.Combine(context.CurrentPluginMetadata.PluginDirectory, "settings.json"));
             PluginSettings.Instance.SettingsChanged = RefreshRepos;
             RefreshRepos();
+
+            foreach (var shellType in Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(IShell).IsAssignableFrom(t) && !t.IsInterface))
+            {
+                var shell = (IShell)Activator.CreateInstance(shellType);
+                _shells[shell.Name] = shell;
+            }
         }
 
         public List<Result> Query(Query query)
@@ -117,9 +125,21 @@ namespace Bloop.GitHub
                         System.Diagnostics.Process.Start(localPath);
                         return true;
                     },
-                    Title = "Go",
+                    Title = "Open Folder",
                     SubTitle = localPath,
                     IcoPath = "Images\\folder.png"
+                });
+
+                results.Add(new Result
+                {
+                    Action = ctx =>
+                    {
+                        _shells[PluginSettings.Instance.Shell].Launch(localPath);
+                        return true;
+                    },
+                    Title = "Open Shell",
+                    SubTitle = localPath,
+                    IcoPath = "Images\\shell.png"
                 });
             }
             else
@@ -128,7 +148,7 @@ namespace Bloop.GitHub
                 {
                     Action = ctx =>
                     {
-                        new GitBash().Launch(localPath);
+                        _shells[PluginSettings.Instance.Shell].Launch(PluginSettings.Instance.RepoRoot);
                         return true;
                     },
                     Title = "Clone",

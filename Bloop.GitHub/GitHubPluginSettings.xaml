@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Personal GitHub Token:"/>
@@ -19,6 +20,9 @@
             <Label Content="Repositories Folder:"/>
             <TextBox Name="RepoRoot" Text="" Width="178" VerticalAlignment="Center" TextChanged="RepoRoot_TextChanged"/>
             <Button Click="Browse_Click">Browse</Button>
+        </StackPanel>
+        <StackPanel Name="Shells" Grid.Row="2" Orientation="Vertical">
+            <Label Content="Shell"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -2,8 +2,7 @@
   "profiles": {
     "Bloop.GitHub": {
       "commandName": "Executable",
-      "executablePath": "C:\\Bloop\\Bloop.exe",
-      "commandLineArgs": "plugindebugger $(OutputPath)"
+      "executablePath": "..\\..\\Bloop.exe"
     }
   }
 }
