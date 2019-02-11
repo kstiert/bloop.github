@@ -148,7 +148,7 @@ namespace Bloop.GitHub
                 {
                     Action = ctx =>
                     {
-                        _shells[PluginSettings.Instance.Shell].Launch(PluginSettings.Instance.RepoRoot);
+                        _shells[PluginSettings.Instance.Shell].Launch(PluginSettings.Instance.RepoRoot, $"git clone {repo.CloneUrl};cd {repo.Name}");
                         return true;
                     },
                     Title = "Clone",

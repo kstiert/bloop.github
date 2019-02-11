@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -7,15 +7,35 @@ namespace Bloop.GitHub.Shell
 {
     public class GitBash : IShell
     {
+        private const string DEFAULT_PATH = "C:\\Program Files\\Git\\bin\\bash.exe";
+
         [DllImport("shlwapi.dll", CharSet = CharSet.Auto, SetLastError = false)]
         static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
+
+        public string Path
+        {
+            get
+            {
+                if (File.Exists(DEFAULT_PATH))
+                {
+                    return DEFAULT_PATH;
+                }
+
+                var exe = new StringBuilder("bash.exe");
+                if(PathFindOnPath(exe, null))
+                {
+                    return exe.ToString();
+                }
+
+                return null;
+            }
+        }
 
         public bool Avalible
         {
             get
             {
-                var exe = new StringBuilder("bash.exe");
-                return PathFindOnPath(exe, null);
+                return !string.IsNullOrEmpty(Path);
             }
         }
 
@@ -25,9 +45,22 @@ namespace Bloop.GitHub.Shell
         {
             var info = new ProcessStartInfo
             {
-                FileName = "bash.exe",
+                FileName = Path,
                 WorkingDirectory = wd
             };
+
+            if(!string.IsNullOrEmpty(command))
+            {
+                var tempPath = System.IO.Path.GetTempFileName();
+                using (var file = File.OpenWrite(tempPath))
+                using (var writer = new StreamWriter(file))
+                {
+                    writer.Write(command);
+                }
+
+                info.Arguments = $"--init-file {tempPath}";
+            }
+
             Process.Start(info);
         }
     }
