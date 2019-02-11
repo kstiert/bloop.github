@@ -1,4 +1,6 @@
-﻿namespace Bloop.GitHub.Shell
+﻿using System.Collections.Generic;
+
+namespace Bloop.GitHub.Shell
 {
     public interface IShell
     {
@@ -6,6 +8,6 @@
 
         string Name { get; }
 
-        void Launch(string wd, string command = null);
+        void Launch(string wd, List<string> commands = null);
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -41,7 +43,7 @@ namespace Bloop.GitHub.Shell
 
         public string Name => "Git Bash";
 
-        public void Launch(string wd, string command = null)
+        public void Launch(string wd, List<string> commands)
         {
             var info = new ProcessStartInfo
             {
@@ -49,13 +51,13 @@ namespace Bloop.GitHub.Shell
                 WorkingDirectory = wd
             };
 
-            if(!string.IsNullOrEmpty(command))
+            if(commands != null && commands.Any())
             {
                 var tempPath = System.IO.Path.GetTempFileName();
                 using (var file = File.OpenWrite(tempPath))
                 using (var writer = new StreamWriter(file))
                 {
-                    writer.Write(command);
+                    writer.Write(string.Join(";", commands));
                 }
 
                 info.Arguments = $"--init-file {tempPath}";
