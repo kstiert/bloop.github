@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Bloop.GitHub": {
+      "commandName": "Executable",
+      "executablePath": "..\\..\\Bloop.exe"
+    }
+  }
+}

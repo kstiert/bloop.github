@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Bloop.GitHub.Shell;
 
 namespace Bloop.GitHub
 {
@@ -20,16 +9,52 @@ namespace Bloop.GitHub
     /// </summary>
     public partial class GitHubPluginSettings : UserControl
     {
-        public GitHubPluginSettings()
+        public GitHubPluginSettings(IDictionary<string, IShell> shells)
         {
             InitializeComponent();
             Token.Text = PluginSettings.Instance.Token;
+            RepoRoot.Text = PluginSettings.Instance.RepoRoot;
+            foreach (var shell in shells.Values)
+            {
+                var radio = new RadioButton
+                {
+                    GroupName = "Shells",
+                    Content = shell.Name,
+                    IsChecked = PluginSettings.Instance.Shell == shell.Name,
+                    IsEnabled = shell.Avalible
+                };
+                radio.Checked += Radio_Checked;
+                Shells.Children.Add(radio);
+            }
         }
 
         private void Token_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = (TextBox)sender;
             PluginSettings.Instance.Token = textBox.Text;
+            PluginSettings.Instance.Save();
+        }
+
+        private void RepoRoot_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = (TextBox)sender;
+            PluginSettings.Instance.RepoRoot = textBox.Text;
+            PluginSettings.Instance.Save();
+        }
+
+        private void Browse_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            if (dialog.ShowDialog() ?? false)
+            {
+                RepoRoot.Text = dialog.SelectedPath;
+            }
+        }
+
+        private void Radio_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var radio = (RadioButton)sender;
+            PluginSettings.Instance.Shell = radio.Content.ToString();
             PluginSettings.Instance.Save();
         }
     }

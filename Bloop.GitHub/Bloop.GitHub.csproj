@@ -2,11 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
+    <OutputPath>..\..\bloop\Output\$(Configuration)\$(TargetFramework)\Plugins\$(MSBuildProjectName)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Bloop.Plugin" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Octokit" Version="0.32.0" />
+    <PackageReference Include="Ookii.Dialogs" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,5 +24,14 @@
     <Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <None Remove="**\*.xaml" />
     <Compile Update="**\*.xaml.cs" SubType="Designer" DependentUpon="%(Filename)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\*.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="plugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
