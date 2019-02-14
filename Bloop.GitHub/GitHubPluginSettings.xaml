@@ -12,7 +12,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Label Content="Personal GitHub Token:"/>
+            <Label Content="Personal GitHub Token (repo scope):"/>
             <TextBox Name="Token" Text="" Width="250" VerticalAlignment="Center" TextChanged="Token_TextChanged"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
